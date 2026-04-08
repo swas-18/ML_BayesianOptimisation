@@ -1,0 +1,58 @@
+# Using Scikit 
+
+#https://copilot.microsoft.com/shares/eNfhJ748sj6fDFjSihvhU
+
+import numpy as np
+from skopt import Optimizer
+from skopt.space import Real
+from skopt.utils import use_named_args
+
+--------------------------------------------------------------------
+>>> Define Dimensionality, and read in data 
+DIM = 2   # change to 8, 5, 12, etc.
+space = [Real(0.0, 1.0, name=f"x{i}") for i in range(DIM)]
+
+X_init = np.array([
+    # your existing points, shape (n_points, DIM)
+])
+
+y_init = np.array([
+    # your outputs, shape (n_points,)
+])
+
+----------------------------------------------------------------------------
+>>> Choose Guassian process, set hyperparameters and create the optimiser
+
+kernel = "Matern"       # or "RBF"
+noise_level = 1e-3      # small noise; GP will refine it
+acq_func = "LCB"        # UCB for minimisation
+kappa = 2.0             # exploration weight (early stage)  In 8D: kappa ≈ 2.5–3 is better
+
+opt = Optimizer(
+    dimensions=space,
+    base_estimator="GP",        # Gaussian Process surrogate
+    acq_func=acq_func,          # UCB
+    acq_optimizer="lbfgs",      # gradient-based optimiser
+    acq_func_kwargs={
+        "kappa": kappa,         # >>> YOU CONTROL EXPLORATION <<<
+        "noise": noise_level    # >>> YOU SET NOISE ASSUMPTION <<<
+    },
+    n_initial_points=0          # we already have initial data
+)
+
+-------------------------------------------------------------------------------
+>>> FIT existing data points to optimiser and find next point to evaluate
+
+opt.tell(X_init.tolist(), y_init.tolist())
+
+x_next = opt.ask()
+print("Next point to evaluate:", x_next)
+
+------------------------------------------------------------------------------
+>>> PASTE IN TRUE Y VALUES FOR x_next and set up the optimiser with new observation 
+  
+y_next = f(x_next)  # your real function, noisy in practice
+opt.tell(x_next, y_next)
+
+
+  
