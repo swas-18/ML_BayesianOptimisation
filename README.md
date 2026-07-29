@@ -42,7 +42,11 @@ The final candidate is selected using the Gaussian Process acquisition score. Se
 - Extra Trees;
 - XGBoost.
 
+## Instructions
 
+To run the pipeline, follow the instructions in this notebook: https://github.com/swas-18/ML_BayesianOptimisation/blob/main/Hybrid_Bayesian_Optimisation.ipynb
+
+You can view performance over rounds with some visuals in this notebook: https://github.com/swas-18/ML_BayesianOptimisation/blob/main/Performance_summary.ipynb
 
 More details about the model and functions used can be found here: https://github.com/swas-18/ML_BayesianOptimisation/blob/main/Model_card.md
 
