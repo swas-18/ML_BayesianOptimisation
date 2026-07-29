@@ -12,8 +12,6 @@ The model is not intended to predict outcomes for deployment. Its purpose is to 
 
 **Primary kernel:** Matérn kernel with (\nu=1.5)
 
-**Alternative kernel:** Radial Basis Function kernel
-
 **Input:** Continuous variables bounded between 0 and 1
 
 **Output:** Predicted function value and predictive uncertainty
@@ -97,9 +95,9 @@ The ARD term is best understood as a trust-region or local-exploitation adjustme
 The following models are used as sensitivity checks:
 
 * Extra Trees Regressor;
-* multilayer perceptron neural network;
+* neural network;
 * XGBoost Regressor;
-* RBF Support Vector Machine classifier.
+* RBF Support Vector Machine classifier (only in earlier versions).
 
 These models do not replace the GP. They are primarily used to assess whether a promising region is robust to different modelling assumptions.
 
@@ -144,20 +142,7 @@ The leave-one-out diagnostics indicate:
 
 These assessments should be updated as additional queries are observed.
 
-## 11. Function-specific strategy
-
-| Function   | Current strategy                                       |
-| ---------- | ------------------------------------------------------ |
-| Function 1 | Use transformed GP and local refinement                |
-| Function 2 | Exploit the narrow low-(x_2) basin                     |
-| Function 3 | Retain moderate exploration around the current basin   |
-| Function 4 | Strong local exploitation                              |
-| Function 5 | Evaluate the upper corner using the transformed GP     |
-| Function 6 | Search locally while keeping (x_5) close to zero       |
-| Function 7 | Use robust local candidates and discount GP confidence |
-| Function 8 | Conservative local refinement                          |
-
-## 12. Limitations
+## 11. Limitations
 
 The model has several important limitations:
 
@@ -172,7 +157,7 @@ The model has several important limitations:
 
 A high acquisition value does not guarantee that a candidate will outperform the current best observation.
 
-## 13. Risks
+## 12. Risks
 
 The main risk is wasting a limited query on a model artefact.
 
@@ -184,11 +169,10 @@ Examples include:
 * overreacting to an unstable ARD length scale;
 * treating agreement between several models trained on the same small dataset as independent confirmation.
 
-## 14. Mitigations
+## 13. Mitigations
 
 The project uses the following safeguards:
 
-* leave-one-out validation;
 * output transformations;
 * alternative kernels;
 * comparison with Extra Trees, neural networks and XGBoost;
@@ -198,13 +182,13 @@ The project uses the following safeguards:
 * manual review of top-ranked candidates;
 * comparison of predicted means, uncertainties and incumbent values.
 
-## 15. Ethical considerations
+## 14. Ethical considerations
 
 The model does not process personal or demographic information and is not used to make decisions about individuals.
 
 The main ethical requirement is transparent reporting of uncertainty and limitations. Model recommendations should not be presented as guaranteed optima.
 
-## 16. Out-of-scope uses
+## 15. Out-of-scope uses
 
 This model should not be used for:
 
@@ -215,7 +199,7 @@ This model should not be used for:
 * production deployment without further validation;
 * claiming discovery of the true global optimum.
 
-## 17. Reproducibility
+## 16. Reproducibility
 
 A separate random seed is used for each function:
 
@@ -239,7 +223,7 @@ Core parameters to record include:
 * output transformation;
 * random seed.
 
-## 18. Future improvements
+## 17. Future improvements
 
 Possible future improvements include:
 
@@ -250,10 +234,9 @@ Possible future improvements include:
 * performance-based ensemble weights;
 * explicit modelling of model disagreement;
 * adaptive trust-region sizes;
-* classification-plus-regression for Function 1;
 * automated transformation selection.
 
-## 19. Ownership
+## 18. Ownership
 
 * Developer: `Swasti Gupta`
 * Course or programme: `Imperial AI & Machine Learning`
